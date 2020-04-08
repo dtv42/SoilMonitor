@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SoilMonitor - Error</title>
+    <!-- IE -->
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <!-- other browsers -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="/">SoilMonitor</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/info">Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/config">Config</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="text-danger display-4" id="err_title">Error</h1>
+            <h2 style="color: gray"><span id="err_code">000</span></h2>
+
+            <p></p>
+            <div class="error-details">
+                <span id="err_message">?</span>
+            </div>
+            <p></p>
+
+            <div class="error-actions">
+                <a href="/" class="btn btn-secondary btn-lg">
+                    Take Me Home
+                </a>
+            </div>
+        </div>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - Dr. Peter Trimmel
+        </div>
+    </footer>
+</body>
+</html>
+
+<script>
+    $.getJSON('/err', function (data) {
+        console.log(data);
+        if (data.Code == 0) {
+            $('#err_title').removeClass('text-danger').addClass('text-success')
+            $('#err_title').text("No Error");
+            $('#err_code').text("000");
+            $('#err_message').text("Stay calm -  no error reported.");
+        }
+        else {
+            $('#err_title').removeClass('text-success').addClass('text-danger')
+            $('#err_title').text("Error");
+            $('#err_code').text(data.Code);
+            $('#err_message').text(data.Message);
+        }
+    }).always(function () {
+        $.ajax({
+            url: '/err',
+            type: 'POST',
+            data: JSON.stringify({
+                Code: 0,
+                Message: "No Error"
+            }),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function () {
+                console.log('Setting error info OK');
+            }
+        });
+    });
+</script>

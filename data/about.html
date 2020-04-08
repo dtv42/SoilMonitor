@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SoilMonitor - About</title>
+    <!-- IE -->
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <!-- other browsers -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+ 
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="/">SoilMonitor</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/info">Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/config">Config</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/about">About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">About</h1>
+
+            <h3>SoilMonitor</h3>
+            <p>Running on an ESP32 microcontroller</p>
+    <pre id="serverInfo">
+    <b>System Info:</b>
+        Chip Revision:          <span id="system_revision">?</span>
+        Sdk Version:            <span id="system_version">?</span>
+        Cpu Frequency (MHz):    <span id="system_frequency">?</span>
+        Flash Chip Speed (MHz): <span id="system_flash_speed">?</span>
+        Flash Chip Size (kB):   <span id="system_flash_size">?</span>
+        Heap Size (kB):         <span id="system_heap_size">?</span>
+        Free Heap (kB):         <span id="system_heap_free">?</span>
+        Sketch Size (kB):       <span id="system_sketch_size">?</span>
+        Free Sketch Space (kB): <span id="system_sketch_space">?</span>
+        Sketch MD5 Checksum:    <span id="system_sketch_md5">????????????????????????????????</span>		
+        ChipID (MAC Address):   <span id="system_chipid">?</span>
+        Software Version:       <span id="system_software">?</span>
+    </pre>
+            <h3>REST API</h3>
+            <p>Providing the following REST based API:</p>
+    <pre id="apiInfo">
+    <b>GET Requests:</b>
+        <a class="text-dark" href="/ap">/ap</a>
+        <a class="text-dark" href="/sta">/sta</a>
+        <a class="text-dark" href="/server">/server</a>
+        <a class="text-dark" href="/system">/system</a>
+        <a class="text-dark" href="/data">/data</a>
+        <a class="text-dark" href="/soil">/soil</a>
+        <a class="text-dark" href="/temp">/temp</a>
+        <a class="text-dark" href="/soil/0">/soil/{i}</a>
+        <a class="text-dark" href="/temp/0">/temp/{i}</a>
+        <a class="text-dark" href="/settings">/settings</a>
+        <a class="text-dark" href="/settings/ap">/settings/ap</a>
+        <a class="text-dark" href="/settings/sta">/settings/sta</a>
+        <a class="text-dark" href="/settings/log">/settings/log</a>
+        <a class="text-dark" href="/settings/cmd">/settings/cmd</a>
+        <a class="text-dark" href="/settings/soil">/settings/soil</a>
+        <a class="text-dark" href="/settings/temp">/settings/temp</a>
+    <b>POST Requests (JSON payload):</b>
+        /reset           
+        /reboot          
+        /settings        
+        /settings/ap     
+        /settings/sta    
+        /settings/log    
+        /settings/cmd    
+        /settings/soil   
+        /settings/temp   
+    </pre>            
+            <p></p>
+            <h3>Contact Us</h3>
+<pre>
+    Grabenweg 4
+    3683 Yspertal
+    Phone: +43 699 1968 1006
+    Email: peter.trimmel@live.com
+    Web: dtv-online.net
+</pre>
+        </div>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - Dr. Peter Trimmel
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+
+        // Initialize all info fields.
+        $(function () {
+            $.getJSON('/system', function (data) {
+                console.log(data);
+
+                $('#system_revision').text(data.ChipRevision);
+                $('#system_version').text(data.SdkVersion);
+                $('#system_frequency').text(data.CpuFreqMHz);
+                $('#system_flash_speed').text(data.FlashChipSpeed);
+                $('#system_flash_size').text(data.FlashChipSize);
+                $('#system_heap_size').text(data.HeapSize);
+                $('#system_heap_free').text(data.FreeHeap);
+                $('#system_sketch_size').text(data.SketchSize);
+                $('#system_sketch_space').text(data.FreeSketchSpace);
+                $('#system_sketch_md5').text(data.SketchMD5);
+                $('#system_chipid').text(data.ChipID);
+                $('#system_software').text(data.Software);
+            });
+        });
+
+        $('#resetModalForm').submit(function () {
+            $.ajax({
+                url: '/reset',
+                type: 'POST',
+                success: function () {
+                    console.log('reset request OK');
+                }
+            });
+            $('#resetModal').modal('hide');
+            return false;
+        });
+    </script>
+</body>
+</html >

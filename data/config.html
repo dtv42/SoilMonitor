@@ -1,0 +1,719 @@
+﻿<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SoilMonitor - Configuration</title>
+    <!-- IE -->
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <!-- other browsers -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.inputmask.min.js"></script>
+</head>
+ 
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="/">SoilMonitor</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/info">Info</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/config">Config</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Settings</h1>
+            <h3>Web Server Info</h3>
+            <p>Available at:</p>
+    <pre id="serverInfo">
+    <b>Web Server:</b>
+        Address (AP):   <span id="server_ap_address">???.???.???.???</span>
+        Address (WiFi): <span id="server_wifi_address">???.???.???.???</span>
+        Hostname:       <span id="server_name">????????????????????????????????</span>
+        Port:           <span id="server_port">??????</span>
+        URL:            <span id="server_url">??????</span>
+    </pre>
+            <p></p>
+            <h3>Access Point Configuration</h3>
+            <p>Configure WiFi access point (default).</p>
+            <!-- Access Point Configuration -->
+            <button id="apButton" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#apModal">
+                Access Point Setup
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="apModal" tabindex="-1" role="dialog" aria-labelledby="apModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="apModalLabel">Access Point Settings</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="apModalForm" role="form" class="was-validated">
+                                <div class="form-group form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" id="apBackup">Backup AP
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="apSSID">SSID</label>
+                                    <input type="text" class="form-control" id="apSSID" placeholder="Enter AP SSID" name="SSID" required maxlength=32>
+                                    <div class="invalid-feedback">Not a valid SSID (max. 32 characters).</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Passphrase</label>
+                                    <input type="text" class="form-control" id="apPASS" placeholder="Enter AP Passphrase" name="PASS" maxlength=32>
+                                    <div class="invalid-feedback">Not a valid passphrase (max. 32 characters).</div>
+                                </div>
+                                <div class="form-group form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" id="apCustom">Custom Settings
+                                    </label>
+                                </div>
+                                <div id="apCustomInput">
+                                    <div class="form-group">
+                                        <label for="apAddress">Address</label>
+                                        <input type="text" class="form-control" id="apAddress" placeholder="Enter IP Address" name="Address" data-inputmask="'alias': 'ip'">
+                                        <div class="invalid-feedback">Not a valid IP address.</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="apGateway">Gateway</label>
+                                        <input type="text" class="form-control" id="apGateway" placeholder="Enter Gateway" name="Gateway" data-inputmask="'alias': 'ip'">
+                                        <div class="invalid-feedback">Not a valid IP address.</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="apSubnet">Subnet Mask</label>
+                                        <input type="text" class="form-control" id="apSubnet" placeholder="Enter Subnet Mask" name="Subnet" data-inputmask="'alias': 'ip'">
+                                        <div class="invalid-feedback">Not a valid IP address.</div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-default btn-success btn-block">Update</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p>WiFi Access Point Info.</p>
+    <pre id="apInfo">
+    <b>WiFi Access Point:</b>
+        Active:    <span id="ap_active">?</span>
+        SSID:      <span id="ap_ssid">????????????????????????????????</span>
+        PASS:      <span id="ap_pass">????????????????????????????????</span>
+        NetworkID: <span id="ap_networkid">???.???.???.???</span>
+        Hostname:  <span id="ap_hostname">???.???.???.???</span>
+        Address:   <span id="ap_address">???.???.???.???</span>
+        Clients:   <span id="ap_clients">?</span>
+        MAC:       <span id="ap_mac">??:??:??:??:??:??</span>
+    </pre>
+            <p></p>
+            <h3>WiFi Station Configuration</h3>
+            <p>Configure WiFi network connection.</p>
+            <!-- WiFi Configuration -->
+            <button id="wifiButton" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#staModal">
+                WiFi Station Setup
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="staModal" tabindex="-1" role="dialog" aria-labelledby="staModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staModalLabel">WiFi Settings</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="staModalForm" role="form">
+                                <div class="form-group">
+                                    <label for="wifiSSID">SSID</label>
+                                    <input type="text" class="form-control" id="wifiSSID" placeholder="Enter AP SSID" name="SSID" required maxlength=32>
+                                </div>
+                                <div class="form-group">
+                                    <label for="wifiPASS">Passphrase</label>
+                                    <input type="text" class="form-control" id="wifiPASS" placeholder="Enter AP Passphrase" name="PASS" maxlength=32>
+                                </div>
+                                <div class="form-group form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" id="wifiDHCP">DHCP Enabled
+                                    </label>
+                                </div>
+                                <div id="wifiDHCPInput">
+                                    <div class="form-group">
+                                        <label for="wifiAddress">Address</label>
+                                        <input type="text" class="form-control" id="wifiAddress" placeholder="Enter IP Address" name="Address" data-inputmask="'alias': 'ip'">
+                                        <div class="invalid-feedback">Not a valid IP address.</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="wifiGateway">Gateway</label>
+                                        <input type="text" class="form-control" id="apGateway" placeholder="Enter Gateway" name="Gateway" data-inputmask="'alias': 'ip'">
+                                        <div class="invalid-feedback">Not a valid IP address.</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="wifiSubnet">Subnet Mask</label>
+                                        <input type="text" class="form-control" id="wifiSubnet" placeholder="Enter Subnet Mask" name="Subnet" data-inputmask="'alias': 'ip'">
+                                        <div class="invalid-feedback">Not a valid IP address.</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="wifiDNS1">Primary DNS</label>
+                                        <input type="text" class="form-control" id="wifiDNS1" placeholder="Enter Primary DNS" name="DNS1" data-inputmask="'alias': 'ip'">
+                                        <div class="invalid-feedback">Not a valid IP address.</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="wifiDNS2">Secondary DNS</label>
+                                        <input type="text" class="form-control" id="wifiDNS2" placeholder="Enter Secondary DNS" name="DNS2" data-inputmask="'alias': 'ip'">
+                                        <div class="invalid-feedback">Not a valid IP address.</div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-default btn-success btn-block">Update</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p></p>
+            <p>WiFi Station Info.</p>
+    <pre id="staInfo">
+    <b>WiFi Network:</b>
+        Active:    <span id="sta_active">?</span>
+        SSID:      <span id="sta_ssid">????????????????????????????????</span>
+        PASS:      <span id="sta_pass">????????????????????????????????</span>
+        NetworkID: <span id="sta_networkid">???.???.???.???</span>
+        Hostname:  <span id="sta_hostname">???.???.???.???</span>
+        Address:   <span id="sta_address">???.???.???.???</span>
+        Gateway:   <span id="sta_gateway">???.???.???.???</span>
+        Subnet:    <span id="sta_subnet">???.???.???.???</span>
+        DNS:       <span id="sta_dns">???.???.???.???</span>
+        BSSID:     <span id="sta_bssid">??:??:??:??:??:??</span>
+        MAC:       <span id="sta_mac">??:??:??:??:??:??</span>
+    </pre>
+            <p></p>
+            <p>Clear the stored configuration data (after restart the SoilMonitor runs as an access point).</p>
+            <button id="clearButton" type="button" class="btn btn-warning" data-toggle="modal" data-target="#resetModal">
+                Reset WiFi Config
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="resetModalLabel">Reset WiFi Config</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="resetModalForm" role="form">
+                                <p>Do You really want to clear all WiFi settings?</p>
+                                <p>The SoilMonitor will restart in the default WiFi accesspoint mode.</p>
+                                <button type="submit" class="btn btn-warning btn-success btn-block">Reset WiFi Config</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p></p>
+            <h3>Logging Configuration</h3>
+            <p>Configure Log Settings.</p>
+            <!-- LogSettings Configuration -->
+            <button id="logButton" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#logModal">
+                Log Level Setup
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="logModal" tabindex="-1" role="dialog" aria-labelledby="logModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="logModalLabel">Log Level Settings</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="logModalForm" role="form" class="was-validated">
+                                <div class="form-group">
+                                    <label for="logLevel">Log Level</label>
+                                    <select id="logLevel">
+                                        <option value="SILENT">SILENT</option>
+                                        <option value="FATAL">FATAL</option>
+                                        <option value="ERROR">ERROR</option>
+                                        <option value="WARNING">WARNING</option>
+                                        <option value="NOTICE">NOTICE</option>
+                                        <option value="TRACE">TRACE</option>
+                                        <option value="VERBOSE">VERBOSE</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-default btn-success btn-block">Update</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p></p>
+    <pre id="logInfo">
+    <b>Logging:</b>
+        Log Level: <span id="log_level">?</span>
+    </pre>
+            <p></p>
+            <h3>Commander Configuration</h3>
+            <p>Configure Cmd Settings.</p>
+            <!-- CmdSettings Configuration -->
+            <button id="cmdButton" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#cmdModal">
+                Commander Setup
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="cmdModal" tabindex="-1" role="dialog" aria-labelledby="cmdModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="cmdModalLabel">Commander Settings</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="cmdModalForm" role="form" class="was-validated">
+
+                                <div class="form-group">
+                                    <label for="cmdPrompt">Commander Prompt</label>
+                                    <input type="text" class="form-control" id="cmdPrompt" placeholder="Enter Prompt" name="Prompt" required maxlength=32>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cmdPassPhrase">Commander Passphrase</label>
+                                    <input type="text" class="form-control" id="cmdPassPhrase" placeholder="Enter Passphrase" name="Passphrase" maxlength=32>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cmdLocalName">BT Localname</label>
+                                    <input type="text" class="form-control" id="cmdLocalName" placeholder="Enter BT Localname" name="LocalName" maxlength=32>
+                                </div>
+                                <div class="form-group form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" id="cmdUseBluetooth">Use Bluetooth
+                                    </label>
+                                </div>
+                                <div class="form-group form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" id="cmdHardLock">Use Hard Lock
+                                    </label>
+                                </div>
+                                <div class="form-group form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" id="cmdLocked">Is Locked
+                                    </label>
+                                </div>
+                                <div class="form-group form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" id="cmdErrorMessages">Show Error Messages
+                                    </label>
+                                </div>
+                                <div class="form-group form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" id="cmdCommandPrompt">Show Command Prompt
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-default btn-success btn-block">Update</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <pre id="cmdInfo">
+    <b>Commander:</b>
+        Prompt:       <span id="cmd_Prompt">?</span>
+        Passphrase:   <span id="cmd_PassPhrase">?</span>
+        BT Localname: <span id="cmd_LocalName">?</span>
+        UseBluetooth: <span id="cmd_UseBluetooth">?</span>
+        HardLock:     <span id="cmd_HardLock">?</span>
+        IsLocked:     <span id="cmd_Locked">?</span>
+        Show Errors:  <span id="cmd_ErrorMessages">?</span>
+        Show Prompt:  <span id="cmd_CommandPrompt">?</span>
+    </pre>
+            <p></p>
+            <p>Save settings to flash storage.</p>
+            <button id="saveButton" type="button" class="btn btn-success" data-toggle="modal" data-target="#saveModal">
+                Save Settings
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="saveModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="saveModalLabel">Save Settings</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="saveModalForm" role="form">
+                                Do You want to save the settings to flash storage?
+                                <button type="submit" class="btn btn-success btn-block">Save Settings</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p></p>
+            <p>Restart the SoilMonitor (reboot).</p>
+            <button id="rebootButton" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rebootModal">
+                Reboot SoilMonitor
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="rebootModal" tabindex="-1" role="dialog" aria-labelledby="rebootModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="rebootModalLabel">Reboot SoilMonitor</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="rebootModalForm" role="form">
+                                Do You really want to reboot the SoilMonitor?
+                                <button type="submit" class="btn btn-danger btn-block">Reboot SoilMonitor</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - Dr. Peter Trimmel
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        var settings;       // Complete settings
+        var apInfo;         // WiFi accesspoint info
+        var staInfo;        // WiFi connection info
+        var serverInfo;     // Server info
+
+        function init() {
+            $.getJSON('/server', function (data) {
+                console.log(data);
+                serverInfo = data;
+            }).always(function () {
+                $('#server_ap_address').text(serverInfo.ApAddress);
+                $('#server_wifi_address').text(serverInfo.WiFiAddress);
+                $('#server_name').text(serverInfo.Name);
+                $('#server_port').text(serverInfo.Port);
+                $('#server_url').text(serverInfo.Url);
+            });
+
+            $.getJSON('/ap', function (data) {
+                console.log(data);
+                apInfo = data;
+            }).always(function () {
+                $('#ap_active').text(apInfo.Active);
+                $('#ap_ssid').text(apInfo.SSID);
+                $('#ap_pass').text(apInfo.PASS);
+                $('#ap_networkid').text(apInfo.NetworkID);
+                $('#ap_hostname').text(apInfo.Hostname);
+                $('#ap_address').text(apInfo.Address);
+                $('#ap_clients').text(apInfo.Clients);
+                $('#ap_mac').text(apInfo.MAC);
+            });
+
+            $.getJSON('/sta', function (data) {
+                console.log(data);
+                staInfo = data;
+            }).always(function () {
+                $('#sta_active').text(staInfo.Active);
+                $('#sta_ssid').text(staInfo.SSID);
+                $('#sta_pass').text(staInfo.PASS);
+                $('#sta_networkid').text(staInfo.NetworkID);
+                $('#sta_hostname').text(staInfo.Hostname);
+                $('#sta_address').text(staInfo.Address);
+                $('#sta_gateway').text(staInfo.Gateway);
+                $('#sta_subnet').text(staInfo.Subnet);
+                $('#sta_dns').text(staInfo.DNS);
+                $('#sta_bssid').text(staInfo.BSSID);
+                $('#sta_mac').text(staInfo.MAC);
+            });
+
+            $.getJSON('/settings', function (data) {
+                console.log(data);
+                settings = data;
+            }).always(function () {
+                $('#log_level').text(settings.Log.Level);
+                $('#cmd_Prompt').text(settings.Cmd.Prompt);
+                $('#cmd_PassPhrase').text(settings.Cmd.PassPhrase);
+                $('#cmd_LocalName').text(settings.Cmd.LocalName);
+                $('#cmd_UseBluetooth').text(settings.Cmd.UseBluetooth);
+                $('#cmd_HardLock').text(settings.Cmd.HardLock);
+                $('#cmd_Locked').text(settings.Cmd.Locked);
+                $('#cmd_ErrorMessages').text(settings.Cmd.ErrorMessages);
+                $('#cmd_CommandPrompt').text(settings.Cmd.CommandPrompt);
+            });
+        }
+
+        // Get all settings data, and update the displayed fields.
+        $(function () {
+            init();
+        });
+
+        // Initialize all masked fields.
+        $(document).ready(function () {
+            $(':input').inputmask();
+        });
+
+        // Preset the form inputs with access point settings data.
+        $('#apButton').click(function () {
+            $('#apBackup').prop('checked', settings.AP.Backup),
+            $('#apSSID').val(settings.AP.SSID),
+            $('#apPASS').val(settings.AP.PASS),
+            $('#apCustom').prop('checked', settings.AP.Custom),
+            $('#apAddress').val(settings.AP.Address),
+            $('#apGateway').val(settings.AP.Gateway),
+            $('#apSubnet').val(settings.AP.Subnet),
+            $('#apModal').modal({ show: true });
+
+            if (settings.AP.Custom) {
+                $('#apCustomInput').show();
+            }
+            else {
+                $('#apCustomInput').hide();
+            }
+        });
+
+        // Update the form display
+        $('#apCustom').change(function () {
+            if ($('#apCustom').prop('checked')) {
+                $('#apCustomInput').show();
+            }
+            else {
+                $('#apCustomInput').hide();
+            }
+        });
+
+        // Submit the access point settings data.
+        $('#apModalForm').submit(function () {
+            $.ajax({
+                url: '/settings/ap',
+                type: 'POST',
+                data: JSON.stringify({
+                    Backup: $('#apBackup').prop('checked'),
+                    SSID: $('#apSSID').val(),
+                    PASS: $('#apPASS').val(),
+                    Custom: $('#apCustom').prop('checked'),
+                    Address: $('#apAddress').val(),
+                    Gateway: $('#apGateway').val(),
+                    Subnet: $('#apSubnet').val()
+                }),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    console.log('setting access point data OK');
+                    console.log(data);
+                    init();
+                }
+            });
+            $('#apModal').modal('hide');
+            return false;
+        });
+
+        // Preset the form inputs with wifi settings data.
+        $('#wifiButton').click(function () {
+            $('#wifiSSID').val(settings.STA.SSID),
+                $('#wifiPASS').val(settings.STA.PASS),
+                $('#wifiDHCP').prop('checked', settings.STA.DHCP),
+                $('#wifiAddress').val(settings.STA.Address),
+                $('#wifiGateway').val(settings.STA.Gateway),
+                $('#wifiSubnet').val(settings.STA.Subnet),
+                $('#wifiDNS1').val(settings.STA.DNS1),
+                $('#wifiDNS2').val(settings.STA.DNS2),
+                $('#staModal').modal({ show: true });
+
+            if (settings.STA.DHCP) {
+                $('#wifiDHCPInput').hide();
+            }
+            else {
+                $('#wifiDHCPInput').show();
+            }
+        });
+
+        // Update the form display
+        $('#wifiDHCP').change(function () {
+            if ($('#wifiDHCP').prop('checked')) {
+                $('#wifiDHCPInput').hide();
+            }
+            else {
+                $('#wifiDHCPInput').show();
+            }
+        });
+
+        // Submit the wifi settings data.
+        $('#staModalForm').submit(function () {
+            $.ajax({
+                url: '/settings/sta',
+                type: 'POST',
+                data: JSON.stringify({
+                    SSID: $('#wifiSSID').val(),
+                    PASS: $('#wifiPASS').val(),
+                    DHCP: $('#wifiDHCP').prop('checked'),
+                    Address: $('#wifiAddress').val(),
+                    Gateway: $('#wifiGateway').val(),
+                    Subnet: $('#wifiSubnet').val(),
+                    DNS1: $('#wifiDNS1').val(),
+                    DNS2: $('#wifiDNS2').val()
+                }),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    console.log('setting wifi data OK');
+                    console.log(data);
+                    init();
+                }
+            });
+            $('#staModal').modal('hide');
+            return false;
+        });
+
+        $('#resetModalForm').submit(function () {
+            $.ajax({
+                url: '/reset',
+                type: 'POST',
+                success: function () {
+                    console.log('resetting WiFi settings OK');
+                }
+            });
+            $('#resetModal').modal('hide');
+            return false;
+        });
+
+        // Preset the form inputs with log settings data.
+        $('#logButton').click(function () {
+            $('#logLevel').val(settings.Log.Level),
+            $('#logModal').modal({ show: true });
+        });
+
+        // Submit the log settings data.
+        $('#logModalForm').submit(function () {
+            $.ajax({
+                url: '/settings/log',
+                type: 'POST',
+                data: JSON.stringify({
+                    Level: $('#logLevel').val(),
+                }),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    console.log('setting log data OK');
+                    console.log(data);
+                    init();
+                }
+            });
+            $('#logModal').modal('hide');
+            return false;
+        });
+
+        // Preset the form inputs with cmd settings data.
+        $('#cmdButton').click(function () {
+            $('#cmdPrompt').val(settings.Cmd.Prompt),
+            $('#cmdPassPhrase').val(settings.Cmd.PassPhrase),
+            $('#cmdLocalName').val(settings.Cmd.LocalName),
+            $('#cmdUseBluetooth').prop('checked', settings.Cmd.UseBluetooth),
+            $('#cmdHardLock').prop('checked', settings.Cmd.HardLock),
+            $('#cmdLocked').prop('checked', settings.Cmd.Locked),
+            $('#cmdErrorMessages').prop('checked', settings.Cmd.ErrorMessages),
+            $('#cmdCommandPrompt').prop('checked', settings.Cmd.CommandPrompt),
+            $('#cmdModal').modal({ show: true });
+        });
+
+        // Submit the cmd settings data.
+        $('#cmdModalForm').submit(function () {
+            $.ajax({
+                url: '/settings/cmd',
+                type: 'POST',
+                data: JSON.stringify({
+                    Prompt: $('#cmdPrompt').val(),
+                    PassPhrase: $('#cmdPassPhrase').val(),
+                    LocalName: $('#cmdLocalName').val(),
+                    UseBluetooth: $('#cmdUseBluetooth').prop('checked'),
+                    HardLock: $('#cmdHardLock').prop('checked'),
+                    Locked: $('#cmdLocked').prop('checked'),
+                    ErrorMessages: $('#cmdErrorMessages').prop('checked'),
+                    CommandPrompt: $('#cmdCommandPrompt').prop('checked'),
+                }),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    console.log('setting cmd data OK');
+                    console.log(data);
+                    init();
+                }
+            });
+            $('#cmdModal').modal('hide');
+            return false;
+        });
+
+        $('#saveModalForm').submit(function () {
+            $.ajax({
+                url: '/save',
+                type: 'POST',
+                success: function () {
+                    console.log('save request OK');
+                }
+            });
+            $('#saveModal').modal('hide');
+            return false;
+        });
+
+        $('#rebootModalForm').submit(function () {
+            $.ajax({
+                url: '/reboot',
+                type: 'POST',
+                success: function () {
+                    console.log('reboot request OK');
+                }
+            });
+            $('#rebootModal').modal('hide');
+            return false;
+        });
+    </script>
+</body>
+</html>

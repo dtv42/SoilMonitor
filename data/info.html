@@ -1,0 +1,467 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SoilMonitor - Info</title>
+    <!-- IE -->
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <!-- other browsers -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="/">SoilMonitor</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home">Home</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/info">Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/config">Config</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Sensor Info</h1>
+            <h3>Temperature Sensor Info</h3>
+            <!-- Temperature Sensor Configuration -->
+            <button id="tempButton" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#tempModal">
+                Configure Sensors
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="tempModal" tabindex="-1" role="dialog" aria-labelledby="tempModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="tempModalLabel">Temperature Sensor Settings</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="tempModalForm" role="form" class="was-validated">
+                                <div class="form-group">
+                                    <label for="inputPin">Pin</label>
+                                    <input type="number" class="form-control" id="inputPin" placeholder="Enter GPIO pin" name="Pin" min="2" max="10">
+                                    <div class="invalid-feedback">Not a valid pin number (2..10).</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputSensor1">Sensor 1 Name</label>
+                                    <input type="text" class="form-control" id="inputSensor1" placeholder="Enter Sensor Name" name="Sensor1" maxlength="32">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputSensor2">Sensor 2 Name</label>
+                                    <input type="text" class="form-control" id="inputSensor2" placeholder="Enter Sensor Name" name="Sensor2" maxlength="32">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputSensor3">Sensor 3 Name</label>
+                                    <input type="text" class="form-control" id="inputSensor3" placeholder="Enter Sensor Name" name="Sensor3" maxlength="32">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputSensor4">Sensor 4 Name</label>
+                                    <input type="text" class="form-control" id="inputSensor4" placeholder="Enter Sensor Name" name="Sensor4" maxlength="32">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputSensor5">Sensor 5 Name</label>
+                                    <input type="text" class="form-control" id="inputSensor5" placeholder="Enter Sensor Name" name="Sensor5" maxlength="32">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputSensor6">Sensor 6 Name</label>
+                                    <input type="text" class="form-control" id="inputSensor6" placeholder="Enter Sensor Name" name="Sensor6" maxlength="32">
+                                </div>
+                                <button type="submit" class="btn btn-default btn-success btn-block">Update</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <pre id="tempSensorInfo">
+    <b>DS18B20 Sensors:</b>
+        Pin: <span id="temp_sensors_pin">???</span>
+    </pre>
+    <pre id="tempSensorInfo1">
+    <b>Temperature Sensor 1:</b>
+        Name:       <span id="temp_sensor1_name">????????????</span>
+        Address:    <span id="temp_sensor1_address">???</span>
+        Resolution: <span id="temp_sensor1_resolution">???</span>
+        Connected:  <span id="temp_sensor1_connected">?.??</span>
+    </pre>
+    <pre id="tempSensorInfo2">
+    <b>Temperature Sensor 2:</b>
+        Name:       <span id="temp_sensor2_name">????????????</span>
+        Address:    <span id="temp_sensor2_address">???</span>
+        Resolution: <span id="temp_sensor2_resolution">???</span>
+        Connected:  <span id="temp_sensor2_connected">?.??</span>
+    </pre>
+    <pre id="tempSensorInfo3">
+    <b>Temperature Sensor 3:</b>
+        Name:       <span id="temp_sensor3_name">????????????</span>
+        Address:    <span id="temp_sensor3_address">???</span>
+        Resolution: <span id="temp_sensor3_resolution">???</span>
+        Connected:  <span id="temp_sensor3_connected">?.??</span>
+    </pre>
+    <pre id="tempSensorInfo4">
+    <b>Temperature Sensor 4:</b>
+        Name:       <span id="temp_sensor4_name">????????????</span>
+        Address:    <span id="temp_sensor4_address">???</span>
+        Resolution: <span id="temp_sensor4_resolution">???</span>
+        Connected:  <span id="temp_sensor4_connected">?.??</span>
+    </pre>
+    <pre id="tempSensorInfo5">
+    <b>Temperature Sensor 5:</b>
+        Name:       <span id="temp_sensor5_name">????????????</span>
+        Address:    <span id="temp_sensor5_address">???</span>
+        Resolution: <span id="temp_sensor5_resolution">???</span>
+        Connected:  <span id="temp_sensor5_connected">?.??</span>
+    </pre>
+    <pre id="tempSensorInfo6">
+    <b>Temperature Sensor 6:</b>
+        Name:       <span id="temp_sensor6_name">????????????</span>
+        Address:    <span id="temp_sensor6_address">???</span>
+        Resolution: <span id="temp_sensor6_resolution">???</span>
+        Connected:  <span id="temp_sensor6_connected">?.??</span>
+    </pre>
+            <!-- Modal -->
+            <div class="modal fade" id="sensorModal" tabindex="-1" role="dialog" aria-labelledby="sensorModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="sensorModalLabel">Sensor Config</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="sensorModalForm" role="form" class="was-validated">
+                                <div class="form-group">
+                                    <label for="inputSensorName">Sensor Name</label>
+                                    <input type="text" class="form-control" id="inputSensorName" placeholder="Enter Sensor Name" name="SensorName" maxlength="32">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputSensorWet">Wet Value (in water)</label>
+                                    <input type="number" class="form-control" id="inputSensorWet" placeholder="Enter Wet Value" name="SensorWet" min="1.0" max="3.5" step=".01">
+                                    <div class="invalid-feedback">Not a valid voltage level (1 .. 3.5).</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputSensorDry">Dry Value (on air)</label>
+                                    <input type="number" class="form-control" id="inputSensorDry" placeholder="Enter Dry Value" name="SensorDry" min="1.0" max="3.5" step=".01">
+                                    <div class="invalid-feedback">Not a valid voltage level (1 .. 3.5).</div>
+                                </div>
+                                <div class="form-group form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" id="inputSensorEnabled">Sensor Enabled
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-default btn-success btn-block">Update</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p></p>
+            <h3>Soil Sensor Info</h3>
+            <!-- Soil Moisture Sensor 1 Configuration -->
+            <button id="sensor1Button" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#sensorModal">
+                Configure Sensor 1
+            </button>
+    <pre id="soilSensorInfo1">
+    <b>Soil Moisture Sensor 1:</b>
+        Name:    <span id="soil_sensor1_name">????????????</span>
+        Pin:     <span id="soil_sensor1_pin">???</span>
+        Wet:     <span id="soil_sensor1_wet">?.??</span>
+        Dry:     <span id="soil_sensor1_dry">?.??</span>
+        Enabled: <span id="soil_sensor1_enabled">?????</span>
+    </pre>
+            <!-- Soil Moisture Sensor 2 Configuration -->
+            <button id="sensor2Button" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#sensorModal">
+                Configure Sensor 2
+            </button>
+    <pre id="soilSensorInfo2">
+    <b>Soil Moisture Sensor 2:</b>
+        Name:    <span id="soil_sensor2_name">????????????</span>
+        Pin:     <span id="soil_sensor2_pin">???</span>
+        Wet:     <span id="soil_sensor2_wet">?.??</span>
+        Dry:     <span id="soil_sensor2_dry">?.??</span>
+        Enabled: <span id="soil_sensor2_enabled">?????</span>
+    </pre>
+            <!-- Soil Moisture Sensor 3 Configuration -->
+            <button id="sensor3Button" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#sensorModal">
+                Configure Sensor 3
+            </button>
+    <pre id="soilSensorInfo3">
+    <b>Soil Moisture Sensor 3:</b>
+        Name:    <span id="soil_sensor3_name">????????????</span>
+        Pin:     <span id="soil_sensor3_pin">???</span>
+        Wet:     <span id="soil_sensor3_wet">?.??</span>
+        Dry:     <span id="soil_sensor3_dry">?.??</span>
+        Enabled: <span id="soil_sensor3_enabled">?????</span>
+    </pre>
+            <!-- Soil Moisture Sensor 4 Configuration -->
+            <button id="sensor4Button" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#sensorModal">
+                Configure Sensor 4
+            </button>
+    <pre id="soilSensorInfo4">
+    <b>Soil Moisture Sensor 4:</b>
+        Name:    <span id="soil_sensor4_name">????????????</span>
+        Pin:     <span id="soil_sensor4_pin">???</span>
+        Wet:     <span id="soil_sensor4_wet">?.??</span>
+        Dry:     <span id="soil_sensor4_dry">?.??</span>
+        Enabled: <span id="soil_sensor4_enabled">?????</span>
+    </pre>
+            <!-- Soil Moisture Sensor 5 Configuration -->
+            <button id="sensor5Button" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#sensorModal">
+                Configure Sensor 5
+            </button>
+    <pre id="soilSensorInfo5">
+    <b>Soil Moisture Sensor 5:</b>
+        Name:    <span id="soil_sensor5_name">????????????</span>
+        Pin:     <span id="soil_sensor5_pin">???</span>
+        Wet:     <span id="soil_sensor5_wet">?.??</span>
+        Dry:     <span id="soil_sensor5_dry">?.??</span>
+        Enabled: <span id="soil_sensor5_enabled">?????</span>
+    </pre>
+            <!-- Soil Moisture Sensor 6 Configuration -->
+            <button id="sensor6Button" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#sensorModal">
+                Configure Sensor 6
+            </button>
+    <pre id="soilSensorInfo6">
+    <b>Soil Moisture Sensor 6:</b>
+        Name:    <span id="soil_sensor6_name">????????????</span>
+        Pin:     <span id="soil_sensor6_pin">???</span>
+        Wet:     <span id="soil_sensor6_wet">?.??</span>
+        Dry:     <span id="soil_sensor6_dry">?.??</span>
+        Enabled: <span id="soil_sensor6_enabled">?????</span>
+    </pre>
+            <p></p>
+            <p>Save settings to flash storage.</p>
+            <button id="saveButton" type="button" class="btn btn-success" data-toggle="modal" data-target="#saveModal">
+                Save Settings
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="saveModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="saveModalLabel">Save Settings</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="saveModalForm" role="form">
+                                Do You want to save the settings to flash storage?
+                                <button type="submit" class="btn btn-success btn-block">Save Settings</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - Dr. Peter Trimmel
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        var pin;            // Temperature sensor OneWire pin
+        var tempdata;       // Complete temperature sensor data
+        var tempsensors;    // Complete temperature sensor settings
+        var soilsensors;    // Complete soil moisture sensor settings
+        var currentsensor;  // Current selected sensor (config)
+
+        function init() {
+            $.getJSON('/settings/soil', function (data) {
+                console.log(data);
+                soilsensors = data;
+            }).always(function () {
+                soilsensors.forEach(function (value, index) {
+                    $('#soil_sensor' + (index + 1) + '_name').text(value.Name);
+                    $('#soil_sensor' + (index + 1) + '_pin').text(value.Pin);
+                    $('#soil_sensor' + (index + 1) + '_wet').text(value.Wet);
+                    $('#soil_sensor' + (index + 1) + '_dry').text(value.Dry);
+                    $('#soil_sensor' + (index + 1) + '_enabled').text(value.Enabled);
+                });
+            });
+
+            $.getJSON('/settings/temp', function (data) {
+                console.log(data);
+                tempsensors = data;
+            }).always(function () {
+                $('#temp_sensors_pin').text(tempsensors.Pin);
+            });
+
+            $.getJSON('/temp', function (data) {
+                console.log(data);
+                tempdata = data;
+            }).always(function () {
+                tempdata.forEach(function (value, index) {
+                    $('#temp_sensor' + (index + 1) + '_name').text(value.Name);
+                    $('#temp_sensor' + (index + 1) + '_address').text(value.Address);
+                    $('#temp_sensor' + (index + 1) + '_resolution').text(value.Resolution);
+                    $('#temp_sensor' + (index + 1) + '_connected').text(value.Connected);
+                });
+            });
+        }
+
+        // Get all settings data, and update the displayed fields.
+        $(function () {
+            init();
+        });
+
+        $('#tempButton').click(function () {
+            $('#inputPin').val(tempsensors.Pin);
+            $('#inputSensor1').val(tempsensors.Sensors[0].Name);
+            $('#inputSensor2').val(tempsensors.Sensors[1].Name);
+            $('#inputSensor3').val(tempsensors.Sensors[2].Name);
+            $('#inputSensor4').val(tempsensors.Sensors[3].Name);
+            $('#inputSensor5').val(tempsensors.Sensors[4].Name);
+            $('#inputSensor6').val(tempsensors.Sensors[5].Name);
+        });
+
+        $('#tempModalForm').submit(function () {
+            $.ajax({
+                url: '/settings/temp',
+                type: 'POST',
+                data: JSON.stringify({
+                    Pin: parseInt($('#inputPin').val()),
+                    Sensors: [
+                        { Name: $('#inputSensor1').val() },
+                        { Name: $('#inputSensor2').val() },
+                        { Name: $('#inputSensor3').val() },
+                        { Name: $('#inputSensor4').val() },
+                        { Name: $('#inputSensor5').val() },
+                        { Name: $('#inputSensor6').val() },
+                    ]
+                }),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function () {
+                    console.log('Setting temp sensor config OK');
+                    init();
+                }
+            });
+            $('#tempModal').modal('hide');
+            return false;
+        });
+
+        $('#sensor1Button').click(function () {
+            currentsensor = 0;
+            $('#sensorModalLabel').val("Sensor 1 Config");
+            $('#inputSensorName').val(soilsensors[0].Name);
+            $('#inputSensorWet').val(soilsensors[0].Wet);
+            $('#inputSensorDry').val(soilsensors[0].Dry);
+            $('#inputSensorEnabled').prop('checked', soilsensors[0].Enabled);
+        });
+
+        $('#sensor2Button').click(function () {
+            currentsensor = 1;
+            $('#sensorModalLabel').val("Sensor 2 Config");
+            $('#inputSensorName').val(soilsensors[1].Name);
+            $('#inputSensorWet').val(soilsensors[1].Wet);
+            $('#inputSensorDry').val(soilsensors[1].Dry);
+            $('#inputSensorEnabled').prop('checked', soilsensors[1].Enabled);
+        });
+
+        $('#sensor3Button').click(function () {
+            currentsensor = 2;
+            $('#sensorModalLabel').val("Sensor 3 Config");
+            $('#inputSensorName').val(soilsensors[2].Name);
+            $('#inputSensorWet').val(soilsensors[2].Wet);
+            $('#inputSensorDry').val(soilsensors[2].Dry);
+            $('#inputSensorEnabled').prop('checked', soilsensors[2].Enabled);
+        });
+
+        $('#sensor4Button').click(function () {
+            currentsensor = 3;
+            $('#sensorModalLabel').val("Sensor 4 Config");
+            $('#inputSensorName').val(soilsensors[3].Name);
+            $('#inputSensorWet').val(soilsensors[3].Wet);
+            $('#inputSensorDry').val(soilsensors[3].Dry);
+            $('#inputSensorEnabled').prop('checked', soilsensors[3].Enabled);
+        });
+
+        $('#sensor5Button').click(function () {
+            currentsensor = 4;
+            $('#sensorModalLabel').val("Sensor 5 Config");
+            $('#inputSensorName').val(soilsensors[4].Name);
+            $('#inputSensorWet').val(soilsensors[4].Wet);
+            $('#inputSensorDry').val(soilsensors[4].Dry);
+            $('#inputSensorEnabled').prop('checked', soilsensors[4].Enabled);
+        });
+
+        $('#sensor6Button').click(function () {
+            currentsensor = 5;
+            $('#sensorModalLabel').val("Sensor 6 Config");
+            $('#inputSensorName').val(soilsensors[5].Name);
+            $('#inputSensorWet').val(soilsensors[5].Wet);
+            $('#inputSensorDry').val(soilsensors[5].Dry);
+            $('#inputSensorEnabled').prop('checked', soilsensors[5].Enabled);
+        });
+
+        $('#sensorModalForm').submit(function () {
+            $.ajax({
+                url: '/settings/soil/' + currentsensor,
+                type: 'POST',
+                data: JSON.stringify({
+                    Name: $('#inputSensorName').val(),
+                    Wet: parseFloat($('#inputSensorWet').val()),
+                    Dry: parseFloat($('#inputSensorDry').val()),
+                    Enabled: $('#inputSensorEnabled').prop('checked'),
+                }),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function () {
+                    console.log('Setting soil sensor ' + currentsensor + ' config OK');
+                    init();
+                }
+            });
+            $('#sensorModal').modal('hide');
+            return false;
+        });
+
+        $('#saveModalForm').submit(function () {
+            $.ajax({
+                url: '/save',
+                type: 'POST',
+                success: function () {
+                    console.log('save request OK');
+                }
+            });
+            $('#saveModal').modal('hide');
+            return false;
+        });
+
+    </script>
+</body>
+</html>

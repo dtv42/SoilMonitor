@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SoilMonitor</title>
+    <!-- IE -->
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <!-- other browsers -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/soilmonitor.min.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/raphael-2.1.4.min.js"></script>
+    <script src="/js/justgage.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="/">SoilMonitor</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/info">Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/config">Config</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <div class="alert alert-success" id="alert">
+                Data retrieved successfully at 00:00:00.
+            </div>
+            <h1 class="display-4">
+                SoilMonitor
+            </h1>
+            <div class="row">
+                <div class="flex-grow-1">
+                    <div class="card border-dark mb-3 text-center" style="max-width: 18rem; margin:5px;">
+                        <h4 class="card-header" id="sensor0">Sensor</h4>
+                        <div class="card-body text-dark">
+                            <h5 class="card-title">Soil Temperature</h5>
+                            <div id="gauge0" class="200x160px" style="width: 220px; height: 160px; display: inline-block; margin: 0 auto;"></div>
+                            <div id="text0">0.0 &deg;F</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="card border-dark mb-3 text-center" style="max-width: 18rem; margin:5px;">
+                        <h4 class="card-header" id="sensor1">Sensor</h4>
+                        <div class="card-body text-dark">
+                            <h5 class="card-title">Soil Moisture</h5>
+                            <div id="gauge1" class="200x160px" style="width: 220px; height: 160px; display: inline-block; margin: 0 auto;"></div>
+                            <div id="text1">0.000 V</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="card border-dark mb-3 text-center" style="max-width: 18rem; margin:5px;">
+                        <h4 class="card-header" id="sensor2">Sensor</h4>
+                        <div class="card-body text-dark">
+                            <h5 class="card-title">Soil Moisture</h5>
+                            <div id="gauge2" class="200x160px" style="width: 220px; height: 160px; display: inline-block; margin: 0 auto;"></div>
+                            <div id="text2">0.000 V</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="card border-dark mb-3 text-center" style="max-width: 18rem; margin:5px;">
+                        <h4 class="card-header" id="sensor3">Sensor</h4>
+                        <div class="card-body text-dark text-center">
+                            <h5 class="card-title">Soil Moisture</h5>
+                            <div id="gauge3" class="200x160px" style="width: 220px; height: 160px; display: inline-block; margin: 0 auto;"></div>
+                            <div id="text3">0.000 V</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p></p>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success mb-2" id="updateButton">Update Data</button>
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="autoUpdate">
+                    <label class="form-check-label" for="autoUpdate">
+                        Auto Update
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - Dr. Peter Trimmel
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        const blue = "#0275d8";
+        const lightblue = "#5bc0de";
+        const green = "#5cb85c";
+        const yellow = "#f0ad4e";
+        const red = "#d9534f";
+
+        var temp1C;
+        var temp1F;
+        var humidity1;
+        var humidity2;
+        var humidity3;
+        var voltage1;
+        var voltage2;
+        var voltage3;
+        var updateTimer;
+
+        var gauge0 = new JustGage({
+            id: "gauge0",
+            value: 10,
+            min: -20,
+            max: 40,
+            decimals: 1,
+            label: "°C",
+            customSectors: {
+                percents: false,
+                ranges: [
+                    {
+                        color: lightblue,
+                        lo: -20,
+                        hi: 0
+                    },
+                    {
+                        color: green,
+                        lo: 0,
+                        hi: 30
+                    },
+                    {
+                        color: red,
+                        lo: 30,
+                        hi: 40
+                    }
+                ]
+            }
+        });
+
+        var gauge1 = new JustGage({
+            id: "gauge1",
+            value: 50,
+            min: 0,
+            max: 100,
+            decimals: 0,
+            label: "%",
+            customSectors: {
+                percents: true,
+                ranges: [
+                    {
+                        color: red,
+                        lo: 0,
+                        hi: 25
+                    },
+                    {
+                        color: yellow,
+                        lo: 25,
+                        hi: 50
+                    },
+                    {
+                        color: green,
+                        lo: 50,
+                        hi: 75
+                    },
+                    {
+                        color: blue,
+                        lo: 75,
+                        hi: 100
+                    }
+                ]
+            }
+        });
+
+        var gauge2 = new JustGage({
+            id: "gauge2",
+            value: 50,
+            min: 0,
+            max: 100,
+            decimals: 0,
+            label: "%",
+            customSectors: {
+                percents: true,
+                ranges: [
+                    {
+                        color: red,
+                        lo: 0,
+                        hi: 25
+                    },
+                    {
+                        color: yellow,
+                        lo: 25,
+                        hi: 50
+                    },
+                    {
+                        color: green,
+                        lo: 50,
+                        hi: 75
+                    },
+                    {
+                        color: blue,
+                        lo: 75,
+                        hi: 100
+                    }
+                ]
+            }
+        });
+
+        var gauge3 = new JustGage({
+            id: "gauge3",
+            value: 50,
+            min: 0,
+            max: 100,
+            decimals: 0,
+            label: "%",
+            customSectors: {
+                percents: true,
+                ranges: [
+                    {
+                        color: red,
+                        lo: 0,
+                        hi: 25
+                    },
+                    {
+                        color: yellow,
+                        lo: 25,
+                        hi: 50
+                    },
+                    {
+                        color: green,
+                        lo: 50,
+                        hi: 75
+                    },
+                    {
+                        color: blue,
+                        lo: 75,
+                        hi: 100
+                    }
+                ]
+            }
+        });
+
+        function update() {
+            $.getJSON('/data', function (data) {
+                console.log(data);
+
+                $('#sensor0').text(data.TempSensors[0].Name);
+                $('#sensor1').text(data.SoilSensors[0].Name);
+                $('#sensor2').text(data.SoilSensors[0].Name);
+                $('#sensor3').text(data.SoilSensors[0].Name);
+
+                voltage1 = data.SoilSensors[0].Voltage.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+                voltage2 = data.SoilSensors[1].Voltage.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+                voltage3 = data.SoilSensors[2].Voltage.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+
+                temp1C = data.TempSensors[0].TempC.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+                temp1F = data.TempSensors[0].TempF.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+                humidity1 = data.SoilSensors[0].Humidity;
+                humidity2 = data.SoilSensors[1].Humidity;
+                humidity3 = data.SoilSensors[2].Humidity;
+
+                $('#text0').text(temp1F + " F");
+                $('#text1').text(voltage1 + " V");
+                $('#text2').text(voltage2 + " V");
+                $('#text3').text(voltage3 + " V");
+
+            }).always(function () {
+                gauge0.refresh(temp1C);
+                gauge1.refresh(humidity1);
+                gauge2.refresh(humidity2);
+                gauge3.refresh(humidity3);
+            }).done(function () {
+                $('#alert').removeClass('alert-danger').addClass('alert-success')
+                $('#alert').text("Data retrieved successfully at " + (new Date()).toLocaleTimeString());
+            }).fail(function () {
+                $('#alert').removeClass('alert-success').addClass('alert-danger')
+                $('#alert').text("Data not successfully retrieved at " + (new Date()).toLocaleTimeString());
+            });
+        }
+
+        $(function () {
+            update();
+        });
+
+        $('#updateButton').click(function () {
+            update();
+        });
+
+        $('#autoUpdate').change(function () {
+            if ($('#autoUpdate').prop('checked')) {
+                updateTimer = setInterval(update, 1000);
+            }
+            else {
+                clearInterval(updateTimer);
+            }
+        });
+
+    </script>
+</body>
+</html>
