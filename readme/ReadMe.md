@@ -321,7 +321,7 @@ temperature sensors (max. 6 sensors each).
   "AP": {
     "Backup": true,
     "SSID": "ESP32",
-    "PASS": "Yellow31",
+    "PASS": "",
     "Hostname": "soilmonitor",
     "Custom": false,
     "Address": "",
@@ -329,8 +329,8 @@ temperature sensors (max. 6 sensors each).
     "Subnet": "255.255.255.0"
   },
   "STA": {
-    "SSID": "A1-WLAN-Box",
-    "PASS": "Yellow31Red21Green41",
+    "SSID": "",
+    "PASS": "",
     "Hostname": "soilmonitor",
     "DHCP": true,
     "Address": "",
