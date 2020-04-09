@@ -432,7 +432,8 @@ The following static files are used:
 - /js/justgage.min.js
 - /js/popper.min.js
 - /js/raphael-2.1.4.min.js
-- /images/favicon.png
+- /settings.json
+- /favicon.png
 
 The web pages are using the REST web api to retrieve sensor data
 and application settings using HTTP GET. HTTP POST calls can be used 
@@ -454,6 +455,8 @@ to modify settings.
         /settings/cmd  
         /settings/soil 
         /settings/temp 
+        /settings/soil/{i} 
+        /settings/temp/{i}  
     
     POST
         /err           
@@ -467,6 +470,8 @@ to modify settings.
         /settings/cmd  
         /settings/soil 
         /settings/temp 
+        /settings/soil/{i} 
+        /settings/temp/{i} 
 ~~~
 
 ### index.html
